@@ -650,6 +650,18 @@
   </div>
 </div>
 
+<div class="modal-bg hidden" id="img-modal" onclick="if(event.target===this)this.classList.add('hidden')">
+  <div class="modal-card" style="text-align:center;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <strong style="font-size:15px;">스토리용 결과 이미지</strong>
+      <button class="back-link" style="margin:0;font-size:14px;" onclick="document.getElementById('img-modal').classList.add('hidden')">닫기 ✕</button>
+    </div>
+    <img id="preview-img" alt="K-MBTI 결과 이미지" style="width:100%;max-height:58vh;object-fit:contain;border-radius:12px;border:1px solid var(--border);margin-bottom:10px;" />
+    <p class="section-body" style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">자동 다운로드가 안 되면 위 이미지를 <strong>꾹 눌러서 저장</strong>하세요! (카톡·인스타 인앱 브라우저 지원)</p>
+    <a id="direct-dl-link" download="k-mbti-result.png" href="#" class="primary-btn" style="display:block;text-decoration:none;padding:12px;font-size:14px;">이미지 파일로 다운로드</a>
+  </div>
+</div>
+
 <canvas id="share-canvas" width="1080" height="1920" class="hidden"></canvas>
 
 <script>
@@ -839,6 +851,7 @@ document.getElementById("start-btn").addEventListener("click", () => {
   state.answers = [];
   document.getElementById("step-intro").classList.add("hidden");
   document.getElementById("step-quiz").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
   renderQuestion();
 });
 
@@ -882,6 +895,12 @@ document.getElementById("back-btn").addEventListener("click", () => {
 
 let lastCopyText = "";
 let lastResultData = null;
+
+// 분석 툴 설정: GA4(G-XXXX) 또는 Clarity 프로젝트 ID 입력 시 자동 추적 활성화
+const ANALYTICS_CONFIG = { ga4Id: "", clarityId: "" };
+function trackEvent(name, params = {}) {
+  if (typeof window.gtag === "function") window.gtag("event", name, params);
+}
 
 // 수익화 슬롯 설정: 오픈 초기엔 enabled:false, CPA/스폰서 링크 확보 시 enabled:true로 전환
 const AD_CONFIG = {
@@ -1030,7 +1049,8 @@ function buildTabCopy(mbti, etType, blood, z) {
   const pct = ((1/12) * (BLOOD_FREQ[state.blood] || 0.25) * (MBTI_FREQ[mbti] || 0.05) * 0.5 * 100);
   const pctStr = pct < 0.1 ? pct.toFixed(2) : pct.toFixed(1);
   const perThousand = Math.max(0.2, pct * 10).toFixed(1);
-  document.getElementById("res-rarity-badge").textContent = `💎 한국 내 약 ${pctStr}% 희귀 조합 (1,000명 중 ${perThousand}명꼴)`;
+  const rarityText = `💎 한국 내 약 ${pctStr}% 희귀 조합 (1,000명 중 ${perThousand}명꼴)`;
+  document.getElementById("res-rarity-badge").textContent = rarityText;
 
   const tabData = buildTabCopy(mbti, etType, state.blood, z);
   const tabBody = document.getElementById("res-tab-body");
@@ -1134,7 +1154,7 @@ function buildTabCopy(mbti, etType, blood, z) {
 
   lastCopyText = `[K-MBTI 결과]\n${fullCode}\n👉 ${nick}\n(${gapBadge})\n- 에겐 ${egenPct}% / 테토 ${tetoPct}%\n- 찰떡 궁합: ${bestBlood} · ${bestMBTI} · ${bestET}`;
   lastResultData = {
-    fullCode, nick, gapBadge, egenPct, tetoPct, etType, mbti,
+    fullCode, nick, gapBadge, rarityText, egenPct, tetoPct, etType, mbti,
     zName: z.name, elem: z.elem, blood: state.blood,
     bestMatch: `${bestBlood} · ${bestMBTI} · ${bestET}`,
     z12Label: z12Obj ? `${z12Obj.emoji} ${z12Obj.name}` : ""
@@ -1159,6 +1179,8 @@ function buildTabCopy(mbti, etType, blood, z) {
 
   document.getElementById("step-quiz").classList.add("hidden");
   document.getElementById("step-result").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  trackEvent("test_complete", { mbti, etType, blood: state.blood });
 }
 
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -1194,18 +1216,22 @@ document.getElementById("save-img-btn").addEventListener("click", () => {
 
   ctx.fillStyle = "#9aa0b4";
   ctx.font = "bold 34px sans-serif";
-  ctx.fillText(lastResultData.fullCode, 90, 290);
+  let codeEndY = wrapText(ctx, lastResultData.fullCode, 90, 275, 900, 48);
 
   ctx.fillStyle = "#ffffff";
-  ctx.font = "900 58px sans-serif";
-  let nextY = wrapText(ctx, lastResultData.nick, 90, 385, 900, 76);
+  ctx.font = "900 56px sans-serif";
+  let nextY = wrapText(ctx, lastResultData.nick, 90, codeEndY + 55, 900, 74);
 
   ctx.fillStyle = "#ff9ec0";
-  ctx.font = "bold 32px sans-serif";
-  ctx.fillText(lastResultData.gapBadge, 90, nextY + 30);
+  ctx.font = "bold 31px sans-serif";
+  let gapEndY = wrapText(ctx, lastResultData.gapBadge, 90, nextY + 28, 900, 44);
+
+  ctx.fillStyle = "#6ee7b7";
+  ctx.font = "bold 28px sans-serif";
+  ctx.fillText(lastResultData.rarityText, 90, gapEndY + 20);
 
   // Bar
-  const barY = nextY + 130;
+  const barY = gapEndY + 120;
   ctx.fillStyle = "#ff7eb3";
   ctx.font = "bold 30px sans-serif";
   ctx.fillText(`에겐 ${lastResultData.egenPct}%`, 90, barY);
@@ -1227,24 +1253,45 @@ document.getElementById("save-img-btn").addEventListener("click", () => {
   ctx.font = "28px sans-serif";
   ctx.fillText("별자리 × 혈액형 × MBTI × 에겐테토 통합 테스트", 90, 1780);
 
-  const a = document.createElement("a");
-  a.download = "k-mbti-result.png";
-  a.href = c.toDataURL("image/png");
-  a.click();
-  document.getElementById("toast").textContent = "스토리용 이미지가 저장되었어요!";
+  const dataUrl = c.toDataURL("image/png");
+  document.getElementById("preview-img").src = dataUrl;
+  const dlLink = document.getElementById("direct-dl-link");
+  dlLink.href = dataUrl;
+  document.getElementById("img-modal").classList.remove("hidden");
+  trackEvent("save_image");
 });
+
+async function safeCopy(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch {
+      return false;
+    }
+  }
+}
 
 document.getElementById("copy-link-btn").addEventListener("click", async () => {
   if (!lastResultData) return;
   const code = encodeURIComponent(`${lastResultData.zName}|${lastResultData.blood}|${lastResultData.mbti}|${lastResultData.etType}|${state.z12 || ""}`);
   const base = window.location.href.split("?")[0];
   const url = `${base}?c=${code}`;
-  try {
-    await navigator.clipboard.writeText(url);
-    document.getElementById("toast").textContent = "궁합 비교 링크가 복사되었어요! 친구에게 보내보세요.";
-  } catch {
-    document.getElementById("toast").textContent = url;
-  }
+  const ok = await safeCopy(url);
+  document.getElementById("toast").textContent = ok
+    ? "궁합 비교 링크가 복사되었어요! 친구에게 보내보세요."
+    : url;
+  trackEvent("copy_link");
 });
 
 function openLegal(kind) {
@@ -1264,12 +1311,10 @@ function openLegal(kind) {
 }
 
 document.getElementById("copy-btn").addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(lastCopyText);
-    document.getElementById("toast").textContent = "결과가 복사되었어요! 카톡에 바로 붙여넣어 보세요.";
-  } catch {
-    document.getElementById("toast").textContent = "복사가 막혀 있어 직접 선택해 복사해 주세요.";
-  }
+  const ok = await safeCopy(lastCopyText);
+  document.getElementById("toast").textContent = ok
+    ? "결과가 복사되었어요! 카톡에 바로 붙여넣어 보세요."
+    : "복사가 막혀 있어 직접 선택해 복사해 주세요.";
 });
 
 document.getElementById("retry-btn").addEventListener("click", () => {
@@ -1278,6 +1323,7 @@ document.getElementById("retry-btn").addEventListener("click", () => {
   document.getElementById("toast").textContent = "";
   document.getElementById("step-result").classList.add("hidden");
   document.getElementById("step-intro").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 </body>
