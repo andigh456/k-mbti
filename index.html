@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
 <title>K-MBTI · 별자리×혈액형×MBTI×에겐테토</title>
 <meta name="description" content="생일·혈액형 2초 입력 + 한국식 상황극 10문항! 내 겉과 속 반전 지수, 희귀도, 친구·연인 궁합까지 한 번에 확인해 보세요." />
 <meta property="og:type" content="website" />
@@ -796,6 +797,19 @@ let state = {
   answers: []
 };
 
+function syncDaysInMonth() {
+  const m = Number(mSel.value);
+  const maxDays = [0,31,29,31,30,31,30,31,31,30,31,30,31][m] || 31;
+  const cur = Number(dSel.value) || 1;
+  dSel.innerHTML = "";
+  for (let d = 1; d <= maxDays; d++) {
+    const o = document.createElement("option");
+    o.value = d; o.textContent = d + "일";
+    if (d === Math.min(cur, maxDays)) o.selected = true;
+    dSel.appendChild(o);
+  }
+}
+
 function updateZodiacUI() {
   state.month = Number(mSel.value);
   state.day = Number(dSel.value);
@@ -803,8 +817,10 @@ function updateZodiacUI() {
   document.getElementById("zodiac-name").textContent = z.name;
   document.getElementById("zodiac-elem").textContent = `${z.elem} 원소 · ${z.elemDesc}`;
 }
-mSel.addEventListener("change", updateZodiacUI);
+mSel.addEventListener("change", () => { syncDaysInMonth(); updateZodiacUI(); });
 dSel.addEventListener("change", updateZodiacUI);
+syncDaysInMonth();
+dSel.value = "6";
 updateZodiacUI();
 
 document.querySelectorAll(".chip-btn").forEach(btn => {
@@ -878,16 +894,30 @@ const AD_CONFIG = {
 function parseInviteParam() {
   const params = new URLSearchParams(window.location.search);
   const raw = params.get("c");
-  if (!raw) return null;
+  if (!raw || raw.length > 80) return null;
   const parts = raw.split("|");
   if (parts.length < 4) return null;
-  return { zName: parts[0], blood: parts[1], mbti: parts[2], et: parts[3], z12: parts[4] || "" };
+  const [zName, blood, mbti, et, z12 = ""] = parts;
+  const validZodiac = ZODIACS.some(z => z.name === zName);
+  const validBlood = Object.prototype.hasOwnProperty.call(BLOOD_META, blood);
+  const validMbti = Object.prototype.hasOwnProperty.call(MBTI_TAG, mbti);
+  const validEt = (et === "에겐" || et === "테토");
+  const validZ12 = !z12 || ZODIAC12.some(z => z.key === z12);
+  if (!validZodiac || !validBlood || !validMbti || !validEt || !validZ12) return null;
+  return { zName, blood, mbti, et, z12 };
 }
 
 const INVITER = parseInviteParam();
 if (INVITER) {
   const sub = document.querySelector("#step-intro .sub");
-  sub.innerHTML = `친구가 보낸 궁합 초대장 도착! (<strong>${INVITER.zName}·${INVITER.blood}형·${INVITER.mbti}·${INVITER.et}형</strong>)<br/>테스트 끝내면 나와의 궁합 점수가 바로 나옵니다.`;
+  sub.textContent = "";
+  sub.appendChild(document.createTextNode("친구가 보낸 궁합 초대장 도착! ("));
+  const strong = document.createElement("strong");
+  strong.textContent = `${INVITER.zName}·${INVITER.blood}형·${INVITER.mbti}·${INVITER.et}형`;
+  sub.appendChild(strong);
+  sub.appendChild(document.createTextNode(")"));
+  sub.appendChild(document.createElement("br"));
+  sub.appendChild(document.createTextNode("테스트 끝내면 나와의 궁합 점수가 바로 나옵니다."));
 }
 
 function calcCompat(inv, my) {
@@ -1244,6 +1274,7 @@ document.getElementById("copy-btn").addEventListener("click", async () => {
 
 document.getElementById("retry-btn").addEventListener("click", () => {
   state.z12 = null;
+  document.getElementById("sim-result").classList.add("hidden");
   document.getElementById("toast").textContent = "";
   document.getElementById("step-result").classList.add("hidden");
   document.getElementById("step-intro").classList.remove("hidden");
