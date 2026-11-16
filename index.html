@@ -4,6 +4,16 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>K-MBTI · 별자리×혈액형×MBTI×에겐테토</title>
+<meta name="description" content="생일·혈액형 2초 입력 + 한국식 상황극 10문항! 내 겉과 속 반전 지수, 희귀도, 친구·연인 궁합까지 한 번에 확인해 보세요." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://andigh456.github.io/k-mbti/" />
+<meta property="og:title" content="K-MBTI · 별자리×혈액형×MBTI×에겐테토 내 성분표" />
+<meta property="og:description" content="겉은 순두부, 속은 불도저? 1분 만에 내 4대 성격 성분표랑 희귀도·연애 궁합까지 뽑아보세요." />
+<meta property="og:image" content="https://andigh456.github.io/k-mbti/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="K-MBTI · 별자리×혈액형×MBTI×에겐테토 내 성분표" />
+<meta name="twitter:description" content="1분 만에 내 4대 성격 성분표랑 희귀도·연애 궁합까지 확인하기" />
+<meta name="twitter:image" content="https://andigh456.github.io/k-mbti/og-image.png" />
 <style>
   :root {
     --bg: #0f1016;
@@ -415,6 +425,55 @@
     max-height: 80vh;
     overflow-y: auto;
   }
+  .rarity-pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(56,217,169,0.14);
+    color: #6ee7b7;
+    border: 1px solid rgba(56,217,169,0.35);
+    margin-top: 6px;
+  }
+  .tab-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .tab-btn {
+    background: #171925;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 10px;
+    padding: 9px 4px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .tab-btn.active {
+    background: rgba(124,108,255,0.22);
+    border-color: rgba(124,108,255,0.55);
+    color: #ffffff;
+  }
+  .sim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .sim-grid select {
+    padding: 10px 10px;
+    font-size: 13px;
+  }
+  .sim-result {
+    background: rgba(124,108,255,0.12);
+    border: 1px solid rgba(124,108,255,0.32);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
+  }
 </style>
 </head>
 <body>
@@ -478,7 +537,8 @@
       <div class="result-hero">
         <div class="code-line" id="res-code"></div>
         <h2 class="nick" id="res-nick"></h2>
-        <span class="hook-pill" id="res-gap-badge"></span>
+        <div><span class="hook-pill" id="res-gap-badge"></span></div>
+        <div><span class="rarity-pill" id="res-rarity-badge"></span></div>
       </div>
 
       <div class="layers" id="res-layers"></div>
@@ -503,8 +563,43 @@
       </div>
 
       <div class="section-box">
+        <div class="section-title">📌 상황별 팩폭 프로필</div>
+        <div class="tab-bar" id="detail-tabs">
+          <button type="button" class="tab-btn active" data-tab="love">💘 연애</button>
+          <button type="button" class="tab-btn" data-tab="work">💼 일</button>
+          <button type="button" class="tab-btn" data-tab="money">💸 돈</button>
+          <button type="button" class="tab-btn" data-tab="cutoff">💣 손절</button>
+        </div>
+        <p class="section-body" id="res-tab-body"></p>
+      </div>
+
+      <div class="section-box">
         <div class="section-title">💘 찰떡 궁합 & 주의할 조합</div>
         <p class="section-body" id="res-match"></p>
+      </div>
+
+      <div class="section-box" id="compat-sim-box">
+        <div class="section-title">👀 쟤랑 나는 몇 점일까? (상대 즉석 궁합 계산기)</div>
+        <p class="section-body" style="font-size:12.5px;color:var(--muted);">썸남·애인·친구 스펙만 딱 찍어보면 바로 궁합 점수 뽑아드려요.</p>
+        <div class="sim-grid">
+          <select id="sim-zodiac"></select>
+          <select id="sim-blood">
+            <option value="A">A형</option>
+            <option value="B">B형</option>
+            <option value="O">O형</option>
+            <option value="AB">AB형</option>
+          </select>
+          <select id="sim-mbti"></select>
+          <select id="sim-et">
+            <option value="에겐">에겐형</option>
+            <option value="테토">테토형</option>
+          </select>
+        </div>
+        <button type="button" class="secondary-btn" id="sim-run-btn" style="background:rgba(124,108,255,0.2);border-color:rgba(124,108,255,0.45);">즉석 궁합 확인하기</button>
+        <div class="sim-result hidden" id="sim-result">
+          <div style="font-size:17px;font-weight:900;color:var(--good);margin-bottom:4px;" id="sim-score"></div>
+          <div style="font-size:13px;line-height:1.5;color:#dfe3f2;" id="sim-desc"></div>
+        </div>
       </div>
 
       <div class="section-box" id="zodiac12-addon">
@@ -874,9 +969,76 @@ function showResult() {
     ? "같은 직진 테토 + 고집 센 불 원소 조합과는 주도권 싸움이 잦을 수 있어요."
     : "감정선 무딘 극T 테토형이랑 붙으면 혼자 속앓이할 확률이 높아요.";
 
+const BLOOD_FREQ = { A: 0.34, O: 0.28, B: 0.26, AB: 0.11 };
+const MBTI_FREQ = {
+  ISTJ:0.12, ISFJ:0.13, INFJ:0.02, INTJ:0.02,
+  ISTP:0.05, ISFP:0.09, INFP:0.05, INTP:0.03,
+  ESTP:0.04, ESFP:0.08, ENFP:0.08, ENTP:0.03,
+  ESTJ:0.09, ESFJ:0.12, ENFJ:0.03, ENTJ:0.02
+};
+
+function buildTabCopy(mbti, etType, blood, z) {
+  const isE = mbti[0] === "E", isT = mbti[2] === "T", isJ = mbti[3] === "J", isTeto = etType === "테토";
+  return {
+    love: isTeto
+      ? `호감 생기면 눈빛부터 티 나고 약속도 먼저 잡는 편이에요. ${isT ? "돌려 말하면 못 알아들어서 직진 고백이 제일 잘 먹혀요." : "좋아하는 사람 앞에서는 은근히 다정해져서 갭 차이가 큽니다."}`
+      : `마음에 들어도 상대 온도부터 재느라 타이밍을 한 박자 늦추기 쉬워요. ${blood === "A" || blood === "B" ? "카톡 답장 속도나 말투 하나로 혼자 의미 부여를 꽤 많이 하는 편." : "한 번 마음 열면 세상 헌신적인데 서운한 건 티 안 내고 쌓아둬요."}`,
+    work: isJ
+      ? `데드라인 어기는 거 제일 싫어하고 일 벌이면 끝은 꼭 보는 타입이에요. ${isTeto ? "답답하면 그냥 내가 총대 메고 처리해 버리는 해결사 기질이 강합니다." : "혼자 꼼꼼하게 퀄리티 챙기느라 남한테 일 넘기는 걸 조금 어려워해요."}`
+      : `초반 몰입도는 미쳤는데 루틴해지면 금방 지루해해요. ${isE ? "혼자 묵묵히 하는 일보다 사람 만나고 아이디어 던지는 판에서 실력이 2배 나옵니다." : "마감 직전에 초인적인 집중력이 터지는 벼락치기 장인이에요."}`,
+    money: isT && isJ
+      ? `후기·스펙·가성비 다 따져보고 결제하는 실속파! 다만 ${z.elem === "불" ? "한 번 꽂힌 취미나 기분 전환엔 통 크게 긁는 반전이 있어요." : "큰돈은 아끼면서 소소한 간식·구독료에서 야금야금 새는 걸 조심해야 해요."}`
+      : `통장 잔고보다 '오늘 내 기분과 무드'가 먼저인 편이에요. ${isTeto ? "내 사람한테 밥 사고 선물 쓰는 데 돈 안 아끼는 호탕한 스타일." : "예쁘거나 감성 꽂히는 소비에 약해서 장바구니 24시간 보류 규칙이 필수예요."}`,
+    cutoff: `겉으론 잘 넘기는 것 같아도 ${isT ? "무례함·약속 파기·말 앞뒤 다른 걸" : "내 마음을 당연하게 여기고 배려 없는 태도를"} 딱 3번 보면 미련 없이 마음 닫아요. 한 번 선 그으면 다시 예전처럼 돌아가기 어려운 타입입니다.`
+  };
+}
+
   document.getElementById("res-code").textContent = fullCode;
   document.getElementById("res-nick").textContent = nick;
   document.getElementById("res-gap-badge").textContent = gapBadge;
+
+  const pct = ((1/12) * (BLOOD_FREQ[state.blood] || 0.25) * (MBTI_FREQ[mbti] || 0.05) * 0.5 * 100);
+  const pctStr = pct < 0.1 ? pct.toFixed(2) : pct.toFixed(1);
+  const perThousand = Math.max(0.2, pct * 10).toFixed(1);
+  document.getElementById("res-rarity-badge").textContent = `💎 한국 내 약 ${pctStr}% 희귀 조합 (1,000명 중 ${perThousand}명꼴)`;
+
+  const tabData = buildTabCopy(mbti, etType, state.blood, z);
+  const tabBody = document.getElementById("res-tab-body");
+  tabBody.textContent = tabData.love;
+  document.querySelectorAll("#detail-tabs .tab-btn").forEach(tb => {
+    tb.classList.toggle("active", tb.dataset.tab === "love");
+    tb.onclick = () => {
+      document.querySelectorAll("#detail-tabs .tab-btn").forEach(x => x.classList.remove("active"));
+      tb.classList.add("active");
+      tabBody.textContent = tabData[tb.dataset.tab];
+    };
+  });
+
+  // Init compatibility simulator dropdowns
+  const simZ = document.getElementById("sim-zodiac");
+  const simM = document.getElementById("sim-mbti");
+  if (!simZ.options.length) {
+    ZODIACS.forEach(item => {
+      const o = document.createElement("option");
+      o.value = item.name; o.textContent = item.name;
+      simZ.appendChild(o);
+    });
+    Object.keys(MBTI_TAG).forEach(code => {
+      const o = document.createElement("option");
+      o.value = code; o.textContent = code;
+      simM.appendChild(o);
+    });
+  }
+  document.getElementById("sim-run-btn").onclick = () => {
+    const pZ = simZ.value;
+    const pB = document.getElementById("sim-blood").value;
+    const pM = simM.value;
+    const pE = document.getElementById("sim-et").value;
+    const c = calcCompat({ zName: pZ, blood: pB, mbti: pM, et: pE }, { mbti, etType, blood: state.blood });
+    document.getElementById("sim-result").classList.remove("hidden");
+    document.getElementById("sim-score").textContent = `궁합 점수 ${c.score}점`;
+    document.getElementById("sim-desc").textContent = `${pZ} · ${pB}형 · ${pM} · ${pE}형 상대와는 — ${c.summary}`;
+  };
 
   let layersHtml = `
     <div class="layer-box">
