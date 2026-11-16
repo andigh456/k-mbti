@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>K-MBTI · 별자리×혈액형×MBTI×에겐테토</title>
+<style>
+  :root {
+    --bg: #0f1016;
+    --card: #181a24;
+    --card-2: #212433;
+    --border: rgba(255,255,255,0.09);
+    --text: #f5f6fa;
+    --muted: #9aa0b4;
+    --accent: #7c6cff;
+    --accent-2: #ff6b9d;
+    --egen: #ff7eb3;
+    --teto: #4cc9f0;
+    --good: #38d9a9;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1d1f30 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 18px 14px 40px;
+  }
+  .app {
+    width: 100%;
+    max-width: 440px;
+  }
+  .badge-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #c8c2ff;
+    background: rgba(124,108,255,0.16);
+    border: 1px solid rgba(124,108,255,0.35);
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 26px;
+    line-height: 1.28;
+    margin: 0 0 10px;
+    letter-spacing: -0.02em;
+  }
+  .sub {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px 18px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .hidden { display: none !important; }
+
+  .label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #d6daea;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .label span.hint {
+    font-weight: 500;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  select, input[type="number"] {
+    width: 100%;
+    background: var(--card-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+  }
+  .zodiac-preview {
+    background: rgba(124,108,255,0.12);
+    border: 1px solid rgba(124,108,255,0.28);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #dedaff;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .blood-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .chip-btn {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 12px 6px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .chip-btn.active {
+    background: linear-gradient(135deg, var(--accent), #5b4df0);
+    border-color: transparent;
+    box-shadow: 0 6px 16px rgba(124,108,255,0.35);
+  }
+  .primary-btn {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(124,108,255,0.3);
+  }
+  .primary-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .secondary-btn {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--card-2);
+    cursor: pointer;
+  }
+
+  /* Quiz */
+  .progress-wrap {
+    margin-bottom: 18px;
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .progress-bar {
+    height: 7px;
+    background: var(--card-2);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 10%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.25s ease;
+  }
+  .q-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #a9b2d0;
+    background: var(--card-2);
+    padding: 4px 9px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .q-title {
+    font-size: 19px;
+    line-height: 1.42;
+    font-weight: 800;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .opt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .opt-btn {
+    text-align: left;
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 14px;
+    padding: 15px 15px;
+    font-size: 14.5px;
+    line-height: 1.48;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s ease, border-color 0.15s ease;
+  }
+  .opt-btn:active { transform: scale(0.985); }
+  .opt-btn:hover { border-color: rgba(124,108,255,0.65); }
+  .back-link {
+    margin-top: 14px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+
+  /* Result */
+  .result-hero {
+    background: linear-gradient(145deg, #23263a, #171925);
+    border: 1px solid rgba(124,108,255,0.35);
+    border-radius: 18px;
+    padding: 18px 16px;
+    margin-bottom: 14px;
+  }
+  .code-line {
+    font-size: 13px;
+    font-weight: 800;
+    color: #c8c2ff;
+    letter-spacing: 0.02em;
+    margin-bottom: 6px;
+  }
+  .nick {
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.32;
+    margin: 0 0 10px;
+  }
+  .hook-pill {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: rgba(255,107,157,0.16);
+    color: #ff9ec0;
+    border: 1px solid rgba(255,107,157,0.35);
+  }
+  .layers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .layer-box {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 11px 12px;
+  }
+  .layer-k {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 3px;
+    font-weight: 700;
+  }
+  .layer-v {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+  .layer-d {
+    font-size: 11.5px;
+    color: #c3c8da;
+    line-height: 1.35;
+  }
+  .section-box {
+    background: var(--card-2);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #dfe3f2;
+    margin: 0 0 7px;
+  }
+  .section-body {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #cfd4e6;
+    margin: 0;
+  }
+  .meter-wrap {
+    margin-top: 8px;
+  }
+  .meter-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .meter-bar {
+    height: 10px;
+    border-radius: 999px;
+    background: #2f3347;
+    overflow: hidden;
+    display: flex;
+  }
+  .meter-egen { background: var(--egen); height: 100%; }
+  .meter-teto { background: var(--teto); height: 100%; }
+  .btn-stack {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .toast {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--good);
+    margin-top: 8px;
+    font-weight: 700;
+    min-height: 18px;
+  }
+  .compat-banner {
+    background: linear-gradient(135deg, rgba(56,217,169,0.16), rgba(124,108,255,0.16));
+    border: 1px solid rgba(56,217,169,0.4);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .compat-score {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--good);
+    margin-bottom: 4px;
+  }
+  .ad-slot {
+    background: linear-gradient(135deg, #25283d, #1c1e2e);
+    border: 1px dashed rgba(255,255,255,0.18);
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 12px;
+    text-align: center;
+  }
+  .ad-slot .ad-badge {
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .ad-slot a {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(124,108,255,0.22);
+    color: #dcd8ff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .footer-legal {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .footer-legal button {
+    background: none;
+    border: none;
+    color: #b7bdd3;
+    font-size: 11.5px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 99;
+  }
+  .modal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    max-width: 400px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="badge-top">🇰🇷 K-MBTI · 4대 성격 통합 테스트</div>
+
+  <!-- STEP 1 -->
+  <section id="step-intro">
+    <h1>별자리·혈액형·MBTI·에겐테토<br/>한 번에 보는 내 성분표</h1>
+    <p class="sub">생일과 혈액형 2초 입력 + 한국식 상황극 10문항.<br/>타고난 기질(겉)과 지금 내 성향(속)의 반전까지 뽑아드려요.</p>
+
+    <div class="panel">
+      <div class="label">1. 생일 (별자리 자동 계산) <span class="hint">모르면 월·일만 대략</span></div>
+      <div class="row-2">
+        <select id="birth-month"></select>
+        <select id="birth-day"></select>
+      </div>
+      <div class="zodiac-preview" id="zodiac-preview">
+        <span>✨ 별자리: <strong id="zodiac-name">게자리</strong></span>
+        <span id="zodiac-elem">물 원소 · 감성 직관</span>
+      </div>
+
+      <div class="label">2. 혈액형</div>
+      <div class="blood-grid">
+        <button class="chip-btn" data-blood="A">A형</button>
+        <button class="chip-btn" data-blood="B">B형</button>
+        <button class="chip-btn" data-blood="O">O형</button>
+        <button class="chip-btn" data-blood="AB">AB형</button>
+      </div>
+
+      <button class="primary-btn" id="start-btn" disabled>혈액형을 선택해 주세요</button>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section id="step-quiz" class="hidden">
+    <div class="panel">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <span id="q-counter">1 / 10</span>
+          <span id="q-percent">10%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+
+      <div class="q-tag" id="q-tag">상황극 01</div>
+      <h2 class="q-title" id="q-title"></h2>
+      <div class="opt-list" id="opt-list"></div>
+      <button class="back-link" id="back-btn">← 이전으로</button>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section id="step-result" class="hidden">
+    <div class="panel">
+      <div class="compat-banner hidden" id="compat-banner">
+        <div class="compat-score" id="compat-score"></div>
+        <p class="section-body" id="compat-desc" style="font-size:13px;"></p>
+      </div>
+
+      <div class="result-hero">
+        <div class="code-line" id="res-code"></div>
+        <h2 class="nick" id="res-nick"></h2>
+        <span class="hook-pill" id="res-gap-badge"></span>
+      </div>
+
+      <div class="layers" id="res-layers"></div>
+
+      <div class="section-box">
+        <div class="section-title">⚖️ 에겐 · 테토 밸런스</div>
+        <div class="meter-wrap">
+          <div class="meter-labels">
+            <span style="color:var(--egen)" id="egen-pct-lbl">에겐 50%</span>
+            <span style="color:var(--teto)" id="teto-pct-lbl">테토 50%</span>
+          </div>
+          <div class="meter-bar">
+            <div class="meter-egen" id="bar-egen" style="width:50%"></div>
+            <div class="meter-teto" id="bar-teto" style="width:50%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-box">
+        <div class="section-title">🔍 겉(별자리·혈액형) vs 속(MBTI·에겐테토) 분석</div>
+        <p class="section-body" id="res-analysis"></p>
+      </div>
+
+      <div class="section-box">
+        <div class="section-title">💘 찰떡 궁합 & 주의할 조합</div>
+        <p class="section-body" id="res-match"></p>
+      </div>
+
+      <div class="section-box" id="zodiac12-addon">
+        <div class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>🐉 띠까지 추가해서 5종 풀스펙 볼래요?</span>
+          <button class="back-link" id="clear-z12-btn" style="margin:0;display:none;font-size:12px;">띠 빼기</button>
+        </div>
+        <p class="section-body" id="z12-sub" style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">출생연도 대신 띠 동물만 고르면 나이 노출 없이 5종 최종 버전으로 바뀝니다.</p>
+        <div class="blood-grid" id="z12-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:0;"></div>
+      </div>
+
+      <div class="btn-stack">
+        <button class="primary-btn" id="save-img-btn">스토리 이미지 저장</button>
+        <button class="secondary-btn" id="copy-link-btn">궁합 링크 복사</button>
+      </div>
+      <div class="btn-stack" style="margin-top:8px;">
+        <button class="secondary-btn" id="copy-btn">텍스트 결과 복사</button>
+        <button class="secondary-btn" id="retry-btn">다시 테스트</button>
+      </div>
+      <div class="toast" id="toast"></div>
+
+      <div class="ad-slot hidden" id="ad-slot">
+        <div class="ad-badge" id="ad-disclosure">제휴·광고 안내 · 링크를 통해 수익이 발생할 수 있습니다</div>
+        <div style="font-size:13.5px;font-weight:700;color:#eef0fa;" id="ad-title"></div>
+        <a id="ad-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-legal">
+    <div>© K-MBTI · 본 테스트는 서버에 개인정보를 저장하지 않습니다.</div>
+    <div>
+      <button type="button" onclick="openLegal('privacy')">개인정보처리방침</button> ·
+      <button type="button" onclick="openLegal('terms')">이용약관</button> ·
+      <button type="button" onclick="openLegal('contact')">제휴/광고 문의</button>
+    </div>
+  </footer>
+</div>
+
+<div class="modal-bg hidden" id="legal-modal" onclick="if(event.target===this)this.classList.add('hidden')">
+  <div class="modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <strong id="legal-title" style="font-size:15px;"></strong>
+      <button class="back-link" style="margin:0;font-size:14px;" onclick="document.getElementById('legal-modal').classList.add('hidden')">닫기 ✕</button>
+    </div>
+    <p id="legal-body" class="section-body" style="white-space:pre-line;font-size:13px;"></p>
+  </div>
+</div>
+
+<canvas id="share-canvas" width="1080" height="1920" class="hidden"></canvas>
+
+<script>
+const ZODIACS = [
+  { name: "염소자리", elem: "흙", elemDesc: "현실 감각 · 꾸준함", start: [12,22], end: [1,19], style: "calmed", energy: "low" },
+  { name: "물병자리", elem: "공기", elemDesc: "독창성 · 자유로움", start: [1,20], end: [2,18], style: "free", energy: "mid" },
+  { name: "물고기자리", elem: "물", elemDesc: "공감 · 낭만 직관", start: [2,19], end: [3,20], style: "soft", energy: "low" },
+  { name: "양자리", elem: "불", elemDesc: "돌진 · 승부욕", start: [3,21], end: [4,19], style: "bold", energy: "high" },
+  { name: "황소자리", elem: "흙", elemDesc: "취향 · 묵직한 한 방", start: [4,20], end: [5,20], style: "calmed", energy: "low" },
+  { name: "쌍둥이자리", elem: "공기", elemDesc: "말빨 · 호기심", start: [5,21], end: [6,21], style: "free", energy: "high" },
+  { name: "게자리", elem: "물", elemDesc: "내 사람 챙김 · 감성", start: [6,22], end: [7,22], style: "soft", energy: "low" },
+  { name: "사자자리", elem: "불", elemDesc: "주목 · 리더십", start: [7,23], end: [8,22], style: "bold", energy: "high" },
+  { name: "처녀자리", elem: "흙", elemDesc: "디테일 · 정리정돈", start: [8,23], end: [9,22], style: "calmed", energy: "low" },
+  { name: "천칭자리", elem: "공기", elemDesc: "밸런스 · 분위기 메이커", start: [9,23], end: [10,22], style: "soft", energy: "mid" },
+  { name: "전갈자리", elem: "물", elemDesc: "집중력 · 속마음 깊음", start: [10,23], end: [11,22], style: "bold", energy: "mid" },
+  { name: "사수자리", elem: "불", elemDesc: "즉흥 · 모험심", start: [11,23], end: [12,21], style: "free", energy: "high" }
+];
+
+const BLOOD_META = {
+  A:  { desc: "배려·눈치·디테일", outer: "차분한 모범생 이미지", bias: "egen" },
+  B:  { desc: "마이웨이·호불호 확실", outer: "꽂히면 직진하는 자유인", bias: "teto" },
+  O:  { desc: "리더십·두루두루 호탕", outer: "시원시원한 분위기 메이커", bias: "teto" },
+  AB: { desc: "사차원·이성과 감성 공존", outer: "속을 알 수 없는 미스터리", bias: "mix" }
+};
+
+const MBTI_TAG = {
+  ENFP: "무한 아이디어 뿜뿜러", ENTP: "말싸움 절대 안 지는 토론러",
+  ESFP: "오늘만 사는 텐션 부스터", ESTP: "일단 저지르고 수습하는 행동대장",
+  ENFJ: "모두를 챙기는 인간 비타민", ENTJ: "효율로 세상을 굴리는 사령관",
+  ESFJ: "단톡방 공지·생일 다 챙기는 총무", ESTJ: "계획표 없으면 불안한 FM 리더",
+  INFP: "혼자만의 우주에 사는 낭만주의자", INTP: "원리 안 풀리면 밤새는 분석가",
+  ISFP: "조용히 자기 취향 지키는 집순이", ISTP: "말 줄이고 핵심만 치는 해결사",
+  INFJ: "겉으론 웃는데 속으로 다 읽는 통찰러", INTJ: "머릿속에 5년 뒤까지 그려둔 전략가",
+  ISFJ: "티 안 나게 다 해주는 숨은 조력자", ISTJ: "약속·마감 칼같이 지키는 신뢰의 아이콘"
+};
+
+const QUESTIONS = [
+  {
+    tag: "단톡방 · 번개",
+    q: "금요일 밤 11시, 친한 친구가 '지금 집 앞인데 잠깐 나올래?' 하면?",
+    a: { text: "오 좋아! 슬리퍼 끌고 10분 만에 나간다", add: { E: 2, teto: 1 } },
+    b: { text: "이미 씻고 누웠는데… 다음 주에 낮에 보자고 한다", add: { I: 2, egen: 1 } }
+  },
+  {
+    tag: "시선 · 첫인상",
+    q: "처음 가본 핫한 카페에 앉았을 때 먼저 눈에 들어오는 건?",
+    a: { text: "메뉴 가격, 좌석 편한지, 콘센트 위치 같은 현실 스펙", add: { S: 2 } },
+    b: { text: "조명 분위기랑 '여기 인스타 잘 나오겠다' 같은 전체 무드", add: { N: 2, egen: 1 } }
+  },
+  {
+    tag: "공감 · 해결",
+    q: "친구가 '나 오늘 회사에서 진짜 억울하게 깨졌어'라며 전화했다. 내 첫 마디는?",
+    a: { text: "헐 미쳤네, 누가 그랬어? 너 많이 속상했겠다", add: { F: 2, egen: 1 } },
+    b: { text: "왜 깨졌는데? 네가 놓친 게 있어, 아니면 상사가 이상한 거야?", add: { T: 2, teto: 1 } }
+  },
+  {
+    tag: "여행 · 일정",
+    q: "2박 3일 여행 가기 전날 밤, 내 카톡이나 메모장 상태는?",
+    a: { text: "맛집·동선·예약 시간까지 시간 단위로 정리 끝", add: { J: 2, teto: 1 } },
+    b: { text: "숙소랑 교통만 잡혔으면 현지 가서 끌리는 대로 간다", add: { P: 2 } }
+  },
+  {
+    tag: "연애 · 텐션",
+    q: "마음에 드는 사람이 생겼을 때 나의 행동 패턴은?",
+    a: { text: "눈 마주치면 먼저 말 걸고 약속까지 내가 잡는다", add: { teto: 2, E: 1 } },
+    b: { text: "상대 말투·표정 다 살피면서 은근히 호감 신호를 흘린다", add: { egen: 2, I: 1 } }
+  },
+  {
+    tag: "갈등 · 대화",
+    q: "가까운 사람과 의견이 부딪혔을 때 나는 어느 쪽?",
+    a: { text: "불편해도 핵심 짚고 바로 풀어야 속이 시원하다", add: { teto: 2, T: 1 } },
+    b: { text: "일단 분위기부터 가라앉히고 상대 기분 상하지 않게 돌려서 말한다", add: { egen: 2, F: 1 } }
+  },
+  {
+    tag: "소비 · 결정",
+    q: "10만 원 공돈이 갑자기 생겼다! 가장 먼저 할 일은?",
+    a: { text: "평소 장바구니 담아둔 실용템이나 저축/투자에 바로 넣는다", add: { S: 1, J: 1, T: 1 } },
+    b: { text: "오늘 기분 내러 맛있는 거 먹거나 예쁜 소품에 쓴다", add: { N: 1, P: 1, F: 1 } }
+  },
+  {
+    tag: "존재감 · 이미지",
+    q: "주변 친구들이 나를 한 단어로 소개할 때 가장 가까운 건?",
+    a: { text: "추진력 있고 든든한, 말하면 행동으로 보여주는 스타일", add: { teto: 2 } },
+    b: { text: "섬세하고 센스 있는, 같이 있으면 마음이 편해지는 스타일", add: { egen: 2 } }
+  },
+  {
+    tag: "모임 · 에너지",
+    q: "처음 보는 사람 6명과 밥 먹는 자리에 불려갔다. 1시간 뒤 나는?",
+    a: { text: "어느새 가운데서 분위기 띄우고 있거나 리드하고 있다", add: { E: 1, teto: 1 } },
+    b: { text: "옆 사람 1~2명이랑 조용히 맞장구치며 속 이야기 중이다", add: { I: 1, egen: 1 } }
+  },
+  {
+    tag: "자기 인식",
+    q: "거울 보고 솔직히 인정하는 내 진짜 성격은?",
+    a: { text: "겉보기보다 승부욕도 강하고 내 기준이 꽤 뚜렷한 편", add: { teto: 2 } },
+    b: { text: "겉보기보다 감정이 섬세하고 남 눈치·분위기를 많이 보는 편", add: { egen: 2 } }
+  }
+];
+
+function getZodiac(m, d) {
+  for (const z of ZODIACS) {
+    const [sm, sd] = z.start, [em, ed] = z.end;
+    if ((m === sm && d >= sd) || (m === em && d <= ed)) return z;
+  }
+  return ZODIACS[0];
+}
+
+// Init dropdowns
+const mSel = document.getElementById("birth-month");
+const dSel = document.getElementById("birth-day");
+for (let m = 1; m <= 12; m++) {
+  const o = document.createElement("option");
+  o.value = m; o.textContent = m + "월";
+  if (m === 7) o.selected = true;
+  mSel.appendChild(o);
+}
+for (let d = 1; d <= 31; d++) {
+  const o = document.createElement("option");
+  o.value = d; o.textContent = d + "일";
+  if (d === 6) o.selected = true;
+  dSel.appendChild(o);
+}
+
+const ZODIAC12 = [
+  { key: "쥐", emoji: "🐭", name: "쥐띠", trait: "눈치 빠르고 실속 챙기는 생존왕", vibe: "smart" },
+  { key: "소", emoji: "🐮", name: "소띠", trait: "한 번 꽂히면 묵직하게 밀고 가는 뚝심", vibe: "steady" },
+  { key: "호랑이", emoji: "🐯", name: "호랑이띠", trait: "기세 좋고 자존심 강한 카리스마", vibe: "bold" },
+  { key: "토끼", emoji: "🐰", name: "토끼띠", trait: "센스 있고 분위기 읽는 매력파", vibe: "soft" },
+  { key: "용", emoji: "🐉", name: "용띠", trait: "스케일 크고 주인공 기질 넘치는 야망가", vibe: "bold" },
+  { key: "뱀", emoji: "🐍", name: "뱀띠", trait: "조용히 계산 다 끝내는 미스터리 전략가", vibe: "smart" },
+  { key: "말", emoji: "🐴", name: "말띠", trait: "자유분방하고 텐션 올라가면 못 말리는 직진파", vibe: "bold" },
+  { key: "양", emoji: "🐑", name: "양띠", trait: "다정하지만 자기 선 넘으면 조용히 정리하는 타입", vibe: "soft" },
+  { key: "원숭이", emoji: "🐵", name: "원숭이띠", trait: "재치·임기응변 만렙에 호기심 천국", vibe: "smart" },
+  { key: "닭", emoji: "🐔", name: "닭띠", trait: "디테일 집착 있고 시간·약속 칼같은 완벽주의", vibe: "steady" },
+  { key: "개", emoji: "🐶", name: "개띠", trait: "내 사람에겐 한없이 충성, 의리파 수호자", vibe: "steady" },
+  { key: "돼지", emoji: "🐷", name: "돼지띠", trait: "복 많고 통 크게 즐기는 낙천가", vibe: "soft" }
+];
+
+let state = {
+  month: 7,
+  day: 6,
+  blood: null,
+  z12: null,
+  idx: 0,
+  answers: []
+};
+
+function updateZodiacUI() {
+  state.month = Number(mSel.value);
+  state.day = Number(dSel.value);
+  const z = getZodiac(state.month, state.day);
+  document.getElementById("zodiac-name").textContent = z.name;
+  document.getElementById("zodiac-elem").textContent = `${z.elem} 원소 · ${z.elemDesc}`;
+}
+mSel.addEventListener("change", updateZodiacUI);
+dSel.addEventListener("change", updateZodiacUI);
+updateZodiacUI();
+
+document.querySelectorAll(".chip-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".chip-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    state.blood = btn.dataset.blood;
+    const sb = document.getElementById("start-btn");
+    sb.disabled = false;
+    sb.textContent = "테스트 시작하기 (10문항)";
+  });
+});
+
+document.getElementById("start-btn").addEventListener("click", () => {
+  state.idx = 0;
+  state.answers = [];
+  document.getElementById("step-intro").classList.add("hidden");
+  document.getElementById("step-quiz").classList.remove("hidden");
+  renderQuestion();
+});
+
+function renderQuestion() {
+  const q = QUESTIONS[state.idx];
+  const n = state.idx + 1;
+  document.getElementById("q-counter").textContent = `${n} / ${QUESTIONS.length}`;
+  document.getElementById("q-percent").textContent = `${n * 10}%`;
+  document.getElementById("progress-fill").style.width = `${n * 10}%`;
+  document.getElementById("q-tag").textContent = q.tag;
+  document.getElementById("q-title").textContent = q.q;
+
+  const list = document.getElementById("opt-list");
+  list.innerHTML = "";
+  [q.a, q.b].forEach(opt => {
+    const b = document.createElement("button");
+    b.className = "opt-btn";
+    b.textContent = opt.text;
+    b.addEventListener("click", () => {
+      state.answers[state.idx] = opt.add;
+      if (state.idx + 1 < QUESTIONS.length) {
+        state.idx++;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    });
+    list.appendChild(b);
+  });
+}
+
+document.getElementById("back-btn").addEventListener("click", () => {
+  if (state.idx === 0) {
+    document.getElementById("step-quiz").classList.add("hidden");
+    document.getElementById("step-intro").classList.remove("hidden");
+  } else {
+    state.idx--;
+    renderQuestion();
+  }
+});
+
+let lastCopyText = "";
+let lastResultData = null;
+
+// 수익화 슬롯 설정: 오픈 초기엔 enabled:false, CPA/스폰서 링크 확보 시 enabled:true로 전환
+const AD_CONFIG = {
+  enabled: false,
+  title: "내 K-MBTI와 잘 맞는 올해 운세·연애 상대가 궁금하다면?",
+  cta: "운세·궁합 보러가기 →",
+  url: "https://example.com"
+};
+
+function parseInviteParam() {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get("c");
+  if (!raw) return null;
+  const parts = raw.split("|");
+  if (parts.length < 4) return null;
+  return { zName: parts[0], blood: parts[1], mbti: parts[2], et: parts[3], z12: parts[4] || "" };
+}
+
+const INVITER = parseInviteParam();
+if (INVITER) {
+  const sub = document.querySelector("#step-intro .sub");
+  sub.innerHTML = `친구가 보낸 궁합 초대장 도착! (<strong>${INVITER.zName}·${INVITER.blood}형·${INVITER.mbti}·${INVITER.et}형</strong>)<br/>테스트 끝내면 나와의 궁합 점수가 바로 나옵니다.`;
+}
+
+function calcCompat(inv, my) {
+  let score = 62;
+  if (inv.et !== my.etType) score += 16; else score += 6;
+  if (inv.mbti[0] !== my.mbti[0]) score += 6;
+  if (inv.mbti[1] === my.mbti[1]) score += 6;
+  if (inv.mbti[2] !== my.mbti[2]) score += 5;
+  if ((inv.blood === "A" && my.blood === "O") || (inv.blood === "O" && my.blood === "A") ||
+      (inv.blood === "B" && my.blood === "AB") || (inv.blood === "AB" && my.blood === "B")) score += 7;
+  score = Math.min(98, Math.max(54, score));
+  const summary = score >= 85
+    ? "서로 없는 걸 채워주는 천생연분급 케미예요. 오래 붙어 있어도 덜 피곤한 조합!"
+    : score >= 72
+    ? "은근히 코드가 잘 맞아서 대화 템포가 금방 붙는 무난한 호감 조합이에요."
+    : "매력 포인트는 확실한데 대화 방식이 달라서 초반엔 서로 번역기가 좀 필요해요.";
+  return { score, summary };
+}
+
+function showResult() {
+  const scores = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0, egen:0, teto:0 };
+  state.answers.forEach(a => {
+    for (const [k, v] of Object.entries(a)) scores[k] += v;
+  });
+
+  const mbti =
+    (scores.E >= scores.I ? "E" : "I") +
+    (scores.S >= scores.N ? "S" : "N") +
+    (scores.T >= scores.F ? "T" : "F") +
+    (scores.J >= scores.P ? "J" : "P");
+
+  const totalET = Math.max(1, scores.egen + scores.teto);
+  const tetoPct = Math.round((scores.teto / totalET) * 100);
+  const egenPct = 100 - tetoPct;
+  const etType = tetoPct >= 50 ? "테토" : "에겐";
+
+  const z = getZodiac(state.month, state.day);
+  const b = BLOOD_META[state.blood];
+
+  // Calculate outer vs inner gap
+  const outerIsTeto = (z.elem === "불" || state.blood === "B" || state.blood === "O");
+  const innerIsTeto = etType === "테토";
+  let matchRate = 76;
+  let gapBadge = "";
+  let analysis = "";
+
+  if (outerIsTeto && !innerIsTeto) {
+    matchRate = 38;
+    gapBadge = "반전 매력 82% · 겉은 불도저, 속은 유리멘탈";
+    analysis = `${z.name}(${z.elem} 원소)·${state.blood}형 조합이라 첫인상은 시원하고 당당해 보이지만, 실제론 ${mbti}에 에겐 성향(${egenPct}%)이 강해 남 눈치와 분위기를 꼼꼼히 살피는 타입이에요. "세 보였는데 알고 보니 제일 다정하다"는 말을 자주 듣습니다.`;
+  } else if (!outerIsTeto && innerIsTeto) {
+    matchRate = 34;
+    gapBadge = "반전 매력 85% · 겉은 순두부, 속은 사령관";
+    analysis = `${z.name}(${z.elem} 원소)·${state.blood}형이라 겉으로는 차분하고 조용해 보이지만, 머릿속엔 ${mbti} + 테토(${tetoPct}%) 본능이 살아 있어서 선 넘으면 칼같이 끊고 목표 잡으면 끝까지 밀어붙여요.`;
+  } else if (innerIsTeto) {
+    matchRate = 91;
+    gapBadge = "겉속 일치율 91% · 앞뒤 똑같은 직진러";
+    analysis = `${z.name}의 기질과 ${state.blood}형, 그리고 ${mbti}·테토(${tetoPct}%)가 전부 한 방향을 가리켜요. 생각과 행동의 시차가 거의 없어서 사람들이 보기에도 솔직하고 믿고 따르기 편한 스타일입니다.`;
+  } else {
+    matchRate = 89;
+    gapBadge = "겉속 일치율 89% · 디테일 장인 감성러";
+    analysis = `${z.name}의 섬세함과 ${state.blood}형, ${mbti}·에겐(${egenPct}%) 성향이 고스란히 맞물려 있어요. 말보다 표정과 맥락을 먼저 읽는 편이라 연애든 일자리든 "센스 있다"는 평가를 가장 많이 받습니다.`;
+  }
+
+  const z12Obj = state.z12 ? ZODIAC12.find(x => x.key === state.z12) : null;
+  const nick = `${etType}력 ${innerIsTeto ? tetoPct : egenPct}% · ${MBTI_TAG[mbti]}`;
+  const fullCode = z12Obj
+    ? `${z12Obj.emoji} ${z12Obj.name} · ${z.name} · ${state.blood}형 · ${mbti} · ${etType}형`
+    : `${z.name} · ${state.blood}형 · ${mbti} · ${etType}형`;
+
+  if (z12Obj) {
+    analysis += ` 여기에 ${z12Obj.name} 특유의 '${z12Obj.trait}' 기질까지 더해져 5종 풀스펙으로 보면 캐릭터가 한층 더 선명해져요.`;
+  }
+
+  const bestET = innerIsTeto ? "에겐형" : "테토형";
+  const bestMBTI = (mbti[0] === "E" ? "I" : "E") + mbti[1] + (mbti[2] === "T" ? "F" : "T") + mbti[3];
+  const bestBlood = state.blood === "A" ? "O형" : state.blood === "B" ? "AB형" : state.blood === "O" ? "A형" : "B형";
+  const clashDesc = innerIsTeto
+    ? "같은 직진 테토 + 고집 센 불 원소 조합과는 주도권 싸움이 잦을 수 있어요."
+    : "감정선 무딘 극T 테토형이랑 붙으면 혼자 속앓이할 확률이 높아요.";
+
+  document.getElementById("res-code").textContent = fullCode;
+  document.getElementById("res-nick").textContent = nick;
+  document.getElementById("res-gap-badge").textContent = gapBadge;
+
+  let layersHtml = `
+    <div class="layer-box">
+      <div class="layer-k">별자리 (타고난 기질)</div>
+      <div class="layer-v">${z.name}</div>
+      <div class="layer-d">${z.elem} 원소 · ${z.elemDesc}</div>
+    </div>
+    <div class="layer-box">
+      <div class="layer-k">혈액형 (대인 첫인상)</div>
+      <div class="layer-v">${state.blood}형</div>
+      <div class="layer-d">${b.desc}</div>
+    </div>
+    <div class="layer-box">
+      <div class="layer-k">MBTI (생각·행동 회로)</div>
+      <div class="layer-v">${mbti}</div>
+      <div class="layer-d">${MBTI_TAG[mbti]}</div>
+    </div>
+    <div class="layer-box">
+      <div class="layer-k">호르몬 무드 (연애·텐션)</div>
+      <div class="layer-v">${etType}형</div>
+      <div class="layer-d">${innerIsTeto ? "추진력·주도권·직진" : "섬세함·공감·분위기"}</div>
+    </div>
+  `;
+  if (z12Obj) {
+    layersHtml += `
+      <div class="layer-box" style="grid-column:span 2;border-color:rgba(124,108,255,0.4);">
+        <div class="layer-k">띠 추가 업그레이드 (한국 풀스펙)</div>
+        <div class="layer-v">${z12Obj.emoji} ${z12Obj.name}</div>
+        <div class="layer-d">${z12Obj.trait}</div>
+      </div>
+    `;
+  }
+  document.getElementById("res-layers").innerHTML = layersHtml;
+
+  const z12Grid = document.getElementById("z12-grid");
+  z12Grid.innerHTML = "";
+  ZODIAC12.forEach(item => {
+    const btn = document.createElement("button");
+    btn.className = "chip-btn" + (state.z12 === item.key ? " active" : "");
+    btn.style.padding = "9px 4px";
+    btn.style.fontSize = "13px";
+    btn.textContent = `${item.emoji} ${item.key}`;
+    btn.addEventListener("click", () => {
+      state.z12 = item.key;
+      showResult();
+    });
+    z12Grid.appendChild(btn);
+  });
+  const clearBtn = document.getElementById("clear-z12-btn");
+  clearBtn.style.display = z12Obj ? "inline-block" : "none";
+  clearBtn.onclick = () => {
+    state.z12 = null;
+    showResult();
+  };
+
+  document.getElementById("egen-pct-lbl").textContent = `에겐 ${egenPct}%`;
+  document.getElementById("teto-pct-lbl").textContent = `테토 ${tetoPct}%`;
+  document.getElementById("bar-egen").style.width = `${egenPct}%`;
+  document.getElementById("bar-teto").style.width = `${tetoPct}%`;
+  document.getElementById("res-analysis").textContent = analysis;
+  document.getElementById("res-match").textContent =
+    `최고 궁합: ${bestBlood} · ${bestMBTI} · ${bestET} (서로 빈칸을 채워주는 조합) / 주의: ${clashDesc}`;
+
+  lastCopyText = `[K-MBTI 결과]\n${fullCode}\n👉 ${nick}\n(${gapBadge})\n- 에겐 ${egenPct}% / 테토 ${tetoPct}%\n- 찰떡 궁합: ${bestBlood} · ${bestMBTI} · ${bestET}`;
+  lastResultData = {
+    fullCode, nick, gapBadge, egenPct, tetoPct, etType, mbti,
+    zName: z.name, elem: z.elem, blood: state.blood,
+    bestMatch: `${bestBlood} · ${bestMBTI} · ${bestET}`,
+    z12Label: z12Obj ? `${z12Obj.emoji} ${z12Obj.name}` : ""
+  };
+
+  if (INVITER) {
+    const compat = calcCompat(INVITER, { mbti, etType, blood: state.blood });
+    document.getElementById("compat-banner").classList.remove("hidden");
+    document.getElementById("compat-score").textContent = `🔗 초대자와의 궁합 ${compat.score}점`;
+    document.getElementById("compat-desc").textContent =
+      `상대(${INVITER.zName}·${INVITER.blood}형·${INVITER.mbti}·${INVITER.et}형) — ${compat.summary}`;
+  }
+
+  if (AD_CONFIG.enabled) {
+    const adEl = document.getElementById("ad-slot");
+    adEl.classList.remove("hidden");
+    document.getElementById("ad-title").textContent = AD_CONFIG.title;
+    const link = document.getElementById("ad-link");
+    link.textContent = AD_CONFIG.cta;
+    link.href = AD_CONFIG.url;
+  }
+
+  document.getElementById("step-quiz").classList.add("hidden");
+  document.getElementById("step-result").classList.remove("hidden");
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + " ";
+    if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+      ctx.fillText(line.trim(), x, y);
+      line = words[n] + " ";
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line.trim(), x, y);
+  return y + lineHeight;
+}
+
+document.getElementById("save-img-btn").addEventListener("click", () => {
+  if (!lastResultData) return;
+  const c = document.getElementById("share-canvas");
+  const ctx = c.getContext("2d");
+  const g = ctx.createLinearGradient(0, 0, 1080, 1920);
+  g.addColorStop(0, "#1c1f33");
+  g.addColorStop(1, "#0f1016");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 1080, 1920);
+
+  ctx.fillStyle = "#c8c2ff";
+  ctx.font = "bold 36px sans-serif";
+  ctx.fillText("🇰🇷 K-MBTI · 내 성격 성분표", 90, 180);
+
+  ctx.fillStyle = "#9aa0b4";
+  ctx.font = "bold 34px sans-serif";
+  ctx.fillText(lastResultData.fullCode, 90, 290);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "900 58px sans-serif";
+  let nextY = wrapText(ctx, lastResultData.nick, 90, 385, 900, 76);
+
+  ctx.fillStyle = "#ff9ec0";
+  ctx.font = "bold 32px sans-serif";
+  ctx.fillText(lastResultData.gapBadge, 90, nextY + 30);
+
+  // Bar
+  const barY = nextY + 130;
+  ctx.fillStyle = "#ff7eb3";
+  ctx.font = "bold 30px sans-serif";
+  ctx.fillText(`에겐 ${lastResultData.egenPct}%`, 90, barY);
+  ctx.fillStyle = "#4cc9f0";
+  ctx.fillText(`테토 ${lastResultData.tetoPct}%`, 840, barY);
+  ctx.fillStyle = "#2b2f44";
+  ctx.fillRect(90, barY + 28, 900, 34);
+  ctx.fillStyle = "#ff7eb3";
+  ctx.fillRect(90, barY + 28, 900 * (lastResultData.egenPct / 100), 34);
+  ctx.fillStyle = "#4cc9f0";
+  ctx.fillRect(90 + 900 * (lastResultData.egenPct / 100), barY + 28, 900 * (lastResultData.tetoPct / 100), 34);
+
+  // Match
+  ctx.fillStyle = "#38d9a9";
+  ctx.font = "bold 34px sans-serif";
+  ctx.fillText(`💘 찰떡 궁합: ${lastResultData.bestMatch}`, 90, barY + 170);
+
+  ctx.fillStyle = "#7a8199";
+  ctx.font = "28px sans-serif";
+  ctx.fillText("별자리 × 혈액형 × MBTI × 에겐테토 통합 테스트", 90, 1780);
+
+  const a = document.createElement("a");
+  a.download = "k-mbti-result.png";
+  a.href = c.toDataURL("image/png");
+  a.click();
+  document.getElementById("toast").textContent = "스토리용 이미지가 저장되었어요!";
+});
+
+document.getElementById("copy-link-btn").addEventListener("click", async () => {
+  if (!lastResultData) return;
+  const code = encodeURIComponent(`${lastResultData.zName}|${lastResultData.blood}|${lastResultData.mbti}|${lastResultData.etType}|${state.z12 || ""}`);
+  const base = window.location.href.split("?")[0];
+  const url = `${base}?c=${code}`;
+  try {
+    await navigator.clipboard.writeText(url);
+    document.getElementById("toast").textContent = "궁합 비교 링크가 복사되었어요! 친구에게 보내보세요.";
+  } catch {
+    document.getElementById("toast").textContent = url;
+  }
+});
+
+function openLegal(kind) {
+  const t = document.getElementById("legal-title");
+  const b = document.getElementById("legal-body");
+  if (kind === "privacy") {
+    t.textContent = "개인정보처리방침";
+    b.textContent = "K-MBTI는 회원가입을 받지 않으며, 입력하신 생일·혈액형·응답 내용은 사용자 브라우저 내에서만 계산되고 서버에 저장·수집되지 않습니다.\n\n추후 광고 또는 제휴 링크가 적용되는 경우 각 광고주의 쿠키 정책이 적용될 수 있습니다.";
+  } else if (kind === "terms") {
+    t.textContent = "이용약관";
+    b.textContent = "본 서비스는 엔터테인먼트 및 자기 이해를 위한 성격 유형 콘텐츠로, 의학적·심리학적 전문 진단을 대체하지 않습니다.";
+  } else {
+    t.textContent = "제휴 / 광고 문의";
+    b.textContent = "스폰서십 및 제휴 문의: intergram20@gmail.com";
+  }
+  document.getElementById("legal-modal").classList.remove("hidden");
+}
+
+document.getElementById("copy-btn").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(lastCopyText);
+    document.getElementById("toast").textContent = "결과가 복사되었어요! 카톡에 바로 붙여넣어 보세요.";
+  } catch {
+    document.getElementById("toast").textContent = "복사가 막혀 있어 직접 선택해 복사해 주세요.";
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", () => {
+  state.z12 = null;
+  document.getElementById("toast").textContent = "";
+  document.getElementById("step-result").classList.add("hidden");
+  document.getElementById("step-intro").classList.remove("hidden");
+});
+</script>
+</body>
+</html>
