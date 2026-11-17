@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>K-MBTI 궁합 점수 원리 & 상극 피하는 법</title>
+<meta name="description" content="K-MBTI의 별자리 원소, 혈액형, MBTI, 에겐테토 4중 궁합 점수가 계산되는 원리와 오래 가는 관계 팁을 설명합니다." />
+<link rel="canonical" href="https://andigh456.github.io/k-mbti/guides/chemistry.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="K-MBTI 궁합 점수 원리 & 상극 피하는 법" />
+<meta property="og:description" content="K-MBTI의 별자리 원소, 혈액형, MBTI, 에겐테토 4중 궁합 점수가 계산되는 원리와 오래 가는 관계 팁을 설명합니다." />
+<meta property="og:image" content="https://andigh456.github.io/k-mbti/og-image.png" />
+<style>
+  :root {
+    --bg: #0f1016;
+    --card: #181a24;
+    --card-2: #212433;
+    --border: rgba(255,255,255,0.09);
+    --text: #f5f6fa;
+    --muted: #9aa0b4;
+    --accent: #7c6cff;
+    --accent-2: #ff6b9d;
+    --good: #38d9a9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1d1f30 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.72;
+    padding: 20px 16px 56px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    color: #c8c2ff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #ffffff; font-weight: 700; }
+  article {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 26px 22px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #c8c2ff;
+    background: rgba(124,108,255,0.16);
+    border: 1px solid rgba(124,108,255,0.35);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 26px; line-height: 1.32; margin: 0 0 12px; letter-spacing: -0.02em; }
+  h2 { font-size: 19px; margin: 28px 0 10px; color: #ffffff; border-left: 3px solid var(--accent); padding-left: 10px; }
+  h3 { font-size: 16px; margin: 18px 0 6px; color: #e2e5f5; }
+  p { margin: 0 0 14px; color: #d5d9ea; font-size: 15px; }
+  ul { margin: 0 0 16px; padding-left: 20px; color: #d5d9ea; font-size: 14.5px; }
+  li { margin-bottom: 6px; }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 16px 0 20px;
+  }
+  .box {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+  }
+  .box strong { display: block; font-size: 15px; margin-bottom: 6px; color: #ffffff; }
+  .box p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+  .cta-box {
+    margin-top: 28px;
+    background: linear-gradient(135deg, rgba(124,108,255,0.18), rgba(255,107,157,0.14));
+    border: 1px solid rgba(124,108,255,0.4);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+  }
+  .cta-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14.5px;
+    padding: 12px 22px;
+    border-radius: 12px;
+  }
+  .guide-list a {
+    display: block;
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .guide-list a:hover { border-color: rgba(124,108,255,0.55); }
+  .guide-list .t { font-weight: 800; font-size: 15.5px; margin-bottom: 4px; display: block; }
+  .guide-list .d { font-size: 13px; color: var(--muted); display: block; }
+  footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top-nav">
+    <a class="brand" href="../index.html">🇰🇷 K-MBTI 테스트 하기</a>
+    <div class="nav-links">
+      <a href="index.html" class="">도감 홈</a>
+<a href="zodiac.html" class="">별자리</a>
+<a href="blood.html" class="">혈액형</a>
+<a href="egenteto.html" class="">에겐테토</a>
+<a href="mbti-gap.html" class="">반전지수</a>
+<a href="zodiac12.html" class="">12띠</a>
+<a href="chemistry.html" class="active">궁합원리</a>
+    </div>
+  </nav>
+
+  <article>
+    <span class="pill">💘 레이어 6 · 궁합 백과</span>
+    <h1>K-MBTI 궁합 점수는 어떻게 정해질까?</h1>
+    <p>단순히 MBTI 알파벳만 맞추면 '똑같은데 맨날 싸우는 조합'이 나오기 쉽습니다. K-MBTI 궁합은 4가지 레이어가 서로 겹치는 부분과 빈자리를 채워주는 부분을 함께 계산합니다.</p>
+    
+        <h2>90점 이상 '찰떡 궁합'이 나오는 3가지 조건</h2>
+        <ul>
+          <li><strong>1. 별자리 원소의 조화</strong>: 불×공기(서로 아이디어를 키우는 관계), 흙×물(안정감과 감성을 채우는 관계)처럼 에너지를 증폭하거나 보완할 때 점수가 크게 오릅니다.</li>
+          <li><strong>2. 에겐·테토의 상호 보완</strong>: 에겐형과 테토형이 만나면 한쪽이 감정을 살피고 한쪽이 결정을 내려 핑퐁이 매끄럽습니다.</li>
+          <li><strong>3. MBTI N/S 또는 T/F 균형</strong>: 같은 방향성을 공유하되, 한쪽의 약점을 다른 쪽이 메워줄 때 장기 연애·협업 만족도가 높습니다.</li>
+        </ul>
+        <h2>점수가 낮게 나와도 오래 가는 비결</h2>
+        <p>궁합 점수가 60점대라고 해서 무조건 안 맞는 것은 아닙니다. 오히려 <strong>서로 다른 속도를 이해하는 기준점</strong>으로 쓰면 좋습니다. 예를 들어 에겐형에게는 "해결책보다 먼저 공감 한 마디", 테토형에게는 "빙빙 돌리지 말고 결론부터 말하기"만 지켜도 갈등의 70%는 줄어듭니다.</p>
+        
+    <div class="cta-box">
+      <strong style="font-size:16px;">내 4대 성격 성분표 + 반전 지수 확인해 볼까요?</strong>
+      <p style="font-size:13px;color:var(--muted);margin:6px 0 0;">생일·혈액형 2초 입력 + 한국식 상황극 10문항으로 바로 나옵니다.</p>
+      <a class="cta-btn" href="../index.html">내 K-MBTI 무료 테스트 시작 →</a>
+    </div>
+  </article>
+
+  <footer>
+    © K-MBTI · <a href="../index.html">테스트 홈으로</a> · <a href="index.html">성격 도감 목록</a>
+  </footer>
+</div>
+</body>
+</html>

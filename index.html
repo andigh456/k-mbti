@@ -479,7 +479,10 @@
 </head>
 <body>
 <div class="app">
-  <div class="badge-top">🇰🇷 K-MBTI · 4대 성격 통합 테스트</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px;">
+    <div class="badge-top" style="margin-bottom:0;">🇰🇷 K-MBTI · 4대 성격 통합 테스트</div>
+    <a href="guides/index.html" style="font-size:12px;font-weight:700;color:#c8c2ff;text-decoration:none;background:rgba(255,255,255,0.06);border:1px solid var(--border);padding:6px 10px;border-radius:999px;">📚 성격 도감</a>
+  </div>
 
   <!-- STEP 1 -->
   <section id="step-intro">
@@ -612,6 +615,19 @@
         </div>
       </div>
 
+      <div class="section-box" id="deep-report-box" style="background:linear-gradient(135deg,rgba(124,108,255,0.16),rgba(255,107,157,0.12));border-color:rgba(124,108,255,0.45);">
+        <div class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>💎 심층 리포트 (연애·돈·속마음 풀버전)</span>
+          <span style="font-size:11px;color:#ffd8a8;background:rgba(255,216,168,0.14);padding:2px 8px;border-radius:999px;">BETA 무료</span>
+        </div>
+        <p class="section-body" style="font-size:13px;margin-bottom:10px;">
+          ① 썸·연애 공략 타이밍 &amp; 금기어<br/>
+          ② 재물·소비 패턴 &amp; 돈 새는 구멍<br/>
+          ③ 아무도 모르는 속마음 &amp; 스트레스 해소법
+        </p>
+        <button type="button" class="primary-btn" id="open-deep-btn" style="padding:12px;font-size:14px;">💎 내 심층 리포트 열어보기</button>
+      </div>
+
       <div class="btn-stack">
         <button class="primary-btn" id="save-img-btn">스토리 이미지 저장</button>
         <button class="secondary-btn" id="copy-link-btn">궁합 링크 복사</button>
@@ -633,11 +649,30 @@
   <footer class="footer-legal">
     <div>© K-MBTI · 본 테스트는 서버에 개인정보를 저장하지 않습니다.</div>
     <div>
+      <a href="guides/index.html" style="color:inherit;font-size:inherit;">성격 도감</a> ·
       <button type="button" onclick="openLegal('privacy')">개인정보처리방침</button> ·
       <button type="button" onclick="openLegal('terms')">이용약관</button> ·
       <button type="button" onclick="openLegal('contact')">제휴/광고 문의</button>
     </div>
   </footer>
+</div>
+
+<div class="modal-bg hidden" id="deep-modal" onclick="if(event.target===this)this.classList.add('hidden')">
+  <div class="modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <strong style="font-size:15.5px;">💎 K-MBTI 심층 리포트</strong>
+      <button class="back-link" style="margin:0;font-size:14px;" onclick="document.getElementById('deep-modal').classList.add('hidden')">닫기 ✕</button>
+    </div>
+    <p id="deep-teaser" class="section-body" style="font-size:13px;background:var(--card-2);padding:12px;border-radius:12px;border:1px solid var(--border);margin-bottom:12px;"></p>
+    <div id="deep-lock-box">
+      <p class="section-body" style="font-size:12.5px;color:var(--muted);margin-bottom:10px;">정식 유료 풀버전은 준비 중이에요. 지금 아래 버튼을 눌러 <strong>친구에게 내 테스트 링크를 공유하면 핵심 3가지 심층 해설을 무료로 바로 열어드려요!</strong></p>
+      <button type="button" class="primary-btn" id="unlock-deep-btn" style="padding:12px;font-size:14px;">🔗 링크 복사하고 무료로 잠금 해제</button>
+    </div>
+    <div id="deep-full-box" class="hidden" style="margin-top:8px;">
+      <div style="font-size:12px;font-weight:700;color:var(--good);margin-bottom:8px;">✅ 잠금 해제 완료! (링크가 복사되었어요)</div>
+      <div id="deep-full-content" class="section-body" style="font-size:13px;line-height:1.65;white-space:pre-line;background:var(--card-2);padding:13px;border-radius:12px;border:1px solid rgba(56,217,169,0.35);"></div>
+    </div>
+  </div>
 </div>
 
 <div class="modal-bg hidden" id="legal-modal" onclick="if(event.target===this)this.classList.add('hidden')">
@@ -1315,6 +1350,47 @@ document.getElementById("copy-btn").addEventListener("click", async () => {
   document.getElementById("toast").textContent = ok
     ? "결과가 복사되었어요! 카톡에 바로 붙여넣어 보세요."
     : "복사가 막혀 있어 직접 선택해 복사해 주세요.";
+});
+
+document.getElementById("open-deep-btn").addEventListener("click", () => {
+  if (!lastResultData) return;
+  trackEvent("deep_report_click", {
+    mbti: lastResultData.mbti,
+    etType: lastResultData.etType,
+    blood: lastResultData.blood
+  });
+  document.getElementById("deep-teaser").textContent =
+    `[${lastResultData.fullCode}]\n겉으로는 ${BLOOD_META[lastResultData.blood].outer}처럼 보이지만, 실제로는 ${lastResultData.etType === "에겐" ? "관계의 미세한 온도 변화를 놓치지 않는" : "결론과 효율이 보이면 망설임 없이 움직이는"} 타입이에요.`;
+  document.getElementById("deep-lock-box").classList.remove("hidden");
+  document.getElementById("deep-full-box").classList.add("hidden");
+  document.getElementById("deep-modal").classList.remove("hidden");
+});
+
+document.getElementById("unlock-deep-btn").addEventListener("click", async () => {
+  if (!lastResultData) return;
+  const code = encodeURIComponent(`${lastResultData.zName}|${lastResultData.blood}|${lastResultData.mbti}|${lastResultData.etType}|${state.z12 || ""}`);
+  const base = window.location.href.split("?")[0];
+  const url = `${base}?c=${code}`;
+  await safeCopy(url);
+  trackEvent("deep_report_share_unlock", { mbti: lastResultData.mbti, etType: lastResultData.etType });
+
+  const isEgen = lastResultData.etType === "에겐";
+  const isN = lastResultData.mbti.includes("N");
+  const isF = lastResultData.mbti.includes("F");
+  const loveTip = isEgen
+    ? "밀당보다 '작은 기억력'에 약해요. 예전에 지나가듯 말한 걸 기억해 주면 바로 호감도가 급상승합니다. 금기어는 '그냥 대충 해' 같은 성의 없는 태도!"
+    : "애매하게 시간 끄는 썸은 금방 식어요. 호감 있으면 날짜·장소 딱 찍어서 직진하는 쪽이 100% 먹힙니다. 금기어는 결론 없이 감정만 빙빙 돌리는 말!";
+  const moneyTip = isF
+    ? "기분 전환·선물·경험 소비에서 지출이 커지기 쉬워요. 월급날 '비상금 자동이체'를 먼저 떼어놓고 남은 돈으로 쓰는 선저축 구조가 딱 맞습니다."
+    : "가성비와 스펙을 따져 큰 지출은 잘 막지만, '시간 아끼는 구독·편의 비용'에서 은근히 많이 나가요. 고정 구독 3개만 점검해도 체감 잔고가 확 달라집니다.";
+  const innerTip = isN
+    ? "혼자 머릿속 시뮬레이션을 너무 많이 돌려서 지치는 편이에요. 스트레스 받을 땐 조용한 산책이나 글로 생각을 꺼내놓으면 금방 가벼워집니다."
+    : "현실 문제가 눈앞에 쌓이면 예민해져요. 당장 오늘 끝낼 수 있는 작은 일 1개부터 처리하거나, 맛있는 거 먹으면서 땀 빼는 게 최고입니다.";
+
+  document.getElementById("deep-full-content").textContent =
+    `💘 1. 연애·썸 공략\n${loveTip}\n\n💸 2. 재물·소비 패턴\n${moneyTip}\n\n🌙 3. 속마음 & 회복 루틴\n${innerTip}${lastResultData.z12Label ? `\n\n🐉 띠 보너스 (${lastResultData.z12Label}): 결정적 순간엔 평소의 ${lastResultData.blood}형 이미지보다 훨씬 과감한 한 방이 나옵니다.` : ""}`;
+  document.getElementById("deep-lock-box").classList.add("hidden");
+  document.getElementById("deep-full-box").classList.remove("hidden");
 });
 
 document.getElementById("retry-btn").addEventListener("click", () => {

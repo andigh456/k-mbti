@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://andigh456.github.io/k-mbti/sitemap.xml

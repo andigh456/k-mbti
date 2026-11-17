@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>혈액형 A·B·O·AB형 겉과 속 프레임 분석 · K-MBTI</title>
+<meta name="description" content="K-MBTI에서 혈액형별 사회적 이미지와 실제 속마음, 에겐·테토 성향과의 결합 패턴을 정리한 해설 페이지입니다." />
+<link rel="canonical" href="https://andigh456.github.io/k-mbti/guides/blood.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="혈액형 A·B·O·AB형 겉과 속 프레임 분석 · K-MBTI" />
+<meta property="og:description" content="K-MBTI에서 혈액형별 사회적 이미지와 실제 속마음, 에겐·테토 성향과의 결합 패턴을 정리한 해설 페이지입니다." />
+<meta property="og:image" content="https://andigh456.github.io/k-mbti/og-image.png" />
+<style>
+  :root {
+    --bg: #0f1016;
+    --card: #181a24;
+    --card-2: #212433;
+    --border: rgba(255,255,255,0.09);
+    --text: #f5f6fa;
+    --muted: #9aa0b4;
+    --accent: #7c6cff;
+    --accent-2: #ff6b9d;
+    --good: #38d9a9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1d1f30 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.72;
+    padding: 20px 16px 56px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    color: #c8c2ff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #ffffff; font-weight: 700; }
+  article {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 26px 22px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #c8c2ff;
+    background: rgba(124,108,255,0.16);
+    border: 1px solid rgba(124,108,255,0.35);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 26px; line-height: 1.32; margin: 0 0 12px; letter-spacing: -0.02em; }
+  h2 { font-size: 19px; margin: 28px 0 10px; color: #ffffff; border-left: 3px solid var(--accent); padding-left: 10px; }
+  h3 { font-size: 16px; margin: 18px 0 6px; color: #e2e5f5; }
+  p { margin: 0 0 14px; color: #d5d9ea; font-size: 15px; }
+  ul { margin: 0 0 16px; padding-left: 20px; color: #d5d9ea; font-size: 14.5px; }
+  li { margin-bottom: 6px; }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 16px 0 20px;
+  }
+  .box {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+  }
+  .box strong { display: block; font-size: 15px; margin-bottom: 6px; color: #ffffff; }
+  .box p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+  .cta-box {
+    margin-top: 28px;
+    background: linear-gradient(135deg, rgba(124,108,255,0.18), rgba(255,107,157,0.14));
+    border: 1px solid rgba(124,108,255,0.4);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+  }
+  .cta-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14.5px;
+    padding: 12px 22px;
+    border-radius: 12px;
+  }
+  .guide-list a {
+    display: block;
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .guide-list a:hover { border-color: rgba(124,108,255,0.55); }
+  .guide-list .t { font-weight: 800; font-size: 15.5px; margin-bottom: 4px; display: block; }
+  .guide-list .d { font-size: 13px; color: var(--muted); display: block; }
+  footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top-nav">
+    <a class="brand" href="../index.html">🇰🇷 K-MBTI 테스트 하기</a>
+    <div class="nav-links">
+      <a href="index.html" class="">도감 홈</a>
+<a href="zodiac.html" class="">별자리</a>
+<a href="blood.html" class="active">혈액형</a>
+<a href="egenteto.html" class="">에겐테토</a>
+<a href="mbti-gap.html" class="">반전지수</a>
+<a href="zodiac12.html" class="">12띠</a>
+<a href="chemistry.html" class="">궁합원리</a>
+    </div>
+  </nav>
+
+  <article>
+    <span class="pill">🩸 레이어 2 · 혈액형 도감</span>
+    <h1>혈액형 A·B·O·AB형, 겉 이미지와 속 본성 차이</h1>
+    <p>혈액형 성격설은 과학적 진단이라기보다 한국 사회에서 오랫동안 공유되어 온 '행동 프레임'에 가깝습니다. K-MBTI에서는 혈액형을 타인이 나를 볼 때 가장 먼저 느끼는 사회적 이미지(겉 레이어)로 활용합니다.</p>
+    
+        <div class="grid-2">
+          <div class="box">
+            <strong>A형 · 배려와 디테일의 가면</strong>
+            <p>겉으로는 예의 바르고 눈치가 빠르며 규칙을 잘 지키는 모범생 이미지입니다. 하지만 속에서는 기준이 엄격해, 한 번 선을 넘은 사람에게는 조용히 마음의 문을 닫습니다.</p>
+          </div>
+          <div class="box">
+            <strong>B형 · 솔직한 직진의 매력</strong>
+            <p>호불호가 분명하고 꽂힌 일에는 놀라운 몰입력을 보입니다. 남 눈치보다 내 기분과 취향이 우선이라, 자유분방하면서도 의외로 정이 깊은 편입니다.</p>
+          </div>
+          <div class="box">
+            <strong>O형 · 호탕한 분위기 메이커</strong>
+            <p>처음 본 사람과도 금방 어울리고 큰 그림을 보는 리더십이 돋보입니다. 다만 작은 디테일이나 감정 상한 티를 안 내고 넘기다가 한 번에 터질 수 있습니다.</p>
+          </div>
+          <div class="box">
+            <strong>AB형 · 이성과 감성의 공존</strong>
+            <p>상황에 따라 쿨한 분석가와 엉뚱한 감성파를 오갑니다. 속내를 쉽게 읽히지 않아 미스터리하다는 말을 자주 듣지만, 논리가 통하는 상대에겐 꽤 솔직합니다.</p>
+          </div>
+        </div>
+        <h2>혈액형 × 에겐·테토가 만날 때 생기는 반전</h2>
+        <p>혈액형 이미지와 에겐·테토 성향이 반대로 걸릴 때 가장 입체적인 캐릭터가 나옵니다.</p>
+        <ul>
+          <li><strong>A형 + 테토형</strong>: 겉은 차분하고 배려심 넘치는데, 결정적 순간엔 누구보다 냉정하게 결단하는 '조용한 불도저' 타입입니다.</li>
+          <li><strong>B형/O형 + 에겐형</strong>: 겉보기엔 털털하고 씩씩해 보이지만, 실제로는 상대 말 한마디에 밤새 신경 쓰는 여린 속마음을 가진 '외강내유' 타입입니다.</li>
+          <li><strong>AB형 + 혼합형</strong>: 상대가 누구냐에 따라 에겐과 테토 모드를 자유자재로 전환해 적응력이 높습니다.</li>
+        </ul>
+        
+    <div class="cta-box">
+      <strong style="font-size:16px;">내 4대 성격 성분표 + 반전 지수 확인해 볼까요?</strong>
+      <p style="font-size:13px;color:var(--muted);margin:6px 0 0;">생일·혈액형 2초 입력 + 한국식 상황극 10문항으로 바로 나옵니다.</p>
+      <a class="cta-btn" href="../index.html">내 K-MBTI 무료 테스트 시작 →</a>
+    </div>
+  </article>
+
+  <footer>
+    © K-MBTI · <a href="../index.html">테스트 홈으로</a> · <a href="index.html">성격 도감 목록</a>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>K-MBTI 성격 도감 · 별자리·혈액형·MBTI·에겐테토·띠 백과사전</title>
+<meta name="description" content="K-MBTI 5대 성격 레이어(별자리, 혈액형, MBTI, 에겐테토, 12띠)의 원리와 겉·속 반전 해석 가이드 모음입니다." />
+<link rel="canonical" href="https://andigh456.github.io/k-mbti/guides/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="K-MBTI 성격 도감 · 별자리·혈액형·MBTI·에겐테토·띠 백과사전" />
+<meta property="og:description" content="K-MBTI 5대 성격 레이어(별자리, 혈액형, MBTI, 에겐테토, 12띠)의 원리와 겉·속 반전 해석 가이드 모음입니다." />
+<meta property="og:image" content="https://andigh456.github.io/k-mbti/og-image.png" />
+<style>
+  :root {
+    --bg: #0f1016;
+    --card: #181a24;
+    --card-2: #212433;
+    --border: rgba(255,255,255,0.09);
+    --text: #f5f6fa;
+    --muted: #9aa0b4;
+    --accent: #7c6cff;
+    --accent-2: #ff6b9d;
+    --good: #38d9a9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1d1f30 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.72;
+    padding: 20px 16px 56px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    color: #c8c2ff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #ffffff; font-weight: 700; }
+  article {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 26px 22px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #c8c2ff;
+    background: rgba(124,108,255,0.16);
+    border: 1px solid rgba(124,108,255,0.35);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  h1 { font-size: 26px; line-height: 1.32; margin: 0 0 12px; letter-spacing: -0.02em; }
+  h2 { font-size: 19px; margin: 28px 0 10px; color: #ffffff; border-left: 3px solid var(--accent); padding-left: 10px; }
+  h3 { font-size: 16px; margin: 18px 0 6px; color: #e2e5f5; }
+  p { margin: 0 0 14px; color: #d5d9ea; font-size: 15px; }
+  ul { margin: 0 0 16px; padding-left: 20px; color: #d5d9ea; font-size: 14.5px; }
+  li { margin-bottom: 6px; }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 16px 0 20px;
+  }
+  .box {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+  }
+  .box strong { display: block; font-size: 15px; margin-bottom: 6px; color: #ffffff; }
+  .box p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+  .cta-box {
+    margin-top: 28px;
+    background: linear-gradient(135deg, rgba(124,108,255,0.18), rgba(255,107,157,0.14));
+    border: 1px solid rgba(124,108,255,0.4);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+  }
+  .cta-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14.5px;
+    padding: 12px 22px;
+    border-radius: 12px;
+  }
+  .guide-list a {
+    display: block;
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .guide-list a:hover { border-color: rgba(124,108,255,0.55); }
+  .guide-list .t { font-weight: 800; font-size: 15.5px; margin-bottom: 4px; display: block; }
+  .guide-list .d { font-size: 13px; color: var(--muted); display: block; }
+  footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top-nav">
+    <a class="brand" href="../index.html">🇰🇷 K-MBTI 테스트 하기</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">도감 홈</a>
+<a href="zodiac.html" class="">별자리</a>
+<a href="blood.html" class="">혈액형</a>
+<a href="egenteto.html" class="">에겐테토</a>
+<a href="mbti-gap.html" class="">반전지수</a>
+<a href="zodiac12.html" class="">12띠</a>
+<a href="chemistry.html" class="">궁합원리</a>
+    </div>
+  </nav>
+
+  <article>
+    <span class="pill">📚 K-MBTI 성격 도감</span>
+    <h1>K-MBTI 5대 성격 레이어 백과사전</h1>
+    <p>왜 같은 MBTI인데 사람마다 느낌이 전혀 다를까요? K-MBTI는 타고난 기질(별자리·혈액형·12띠)과 현재의 행동 성향(MBTI·에겐테토)을 겹쳐서 입체적으로 해석합니다. 아래 도감에서 각 레이어의 기준과 궁합 원리를 자세히 확인해 보세요.</p>
+    
+        <div class="guide-list">
+          <a href="zodiac.html">
+            <span class="t">✨ 1. 12별자리 4원소(불·흙·공기·물) 기질 도감</span>
+            <span class="d">양·사자·사수부터 황소·처녀·염소까지, 첫인상과 기본 텐션을 결정하는 별자리 원소 해설</span>
+          </a>
+          <a href="blood.html">
+            <span class="t">🩸 2. 혈액형 A·B·O·AB형 겉과 속 프레임 분석</span>
+            <span class="d">한국인이 가장 익숙한 사회적 가면과 스트레스 받을 때 튀어나오는 본성 차이</span>
+          </a>
+          <a href="egenteto.html">
+            <span class="t">⚖️ 3. 에겐 vs 테토 성향 완벽 가이드</span>
+            <span class="d">감성·조율의 에겐형과 직진·추진의 테토형, 비율에 따른 연애·일 처리 차이</span>
+          </a>
+          <a href="mbti-gap.html">
+            <span class="t">🔍 4. 16가지 MBTI '겉과 속 반전 지수' 원리</span>
+            <span class="d">겉으로는 얌전한데 속은 불도저인 사람, 왜 반전 지수가 높을수록 매력적일까?</span>
+          </a>
+          <a href="zodiac12.html">
+            <span class="t">🐉 5. 12띠 기질 도감 (나이 노출 없이 보는 한 방 캐릭터)</span>
+            <span class="d">쥐띠부터 돼지띠까지, 결정적 순간에 튀어나오는 12가지 고유 무기와 약점</span>
+          </a>
+          <a href="chemistry.html">
+            <span class="t">💘 6. K-MBTI 궁합 점수 산출 원리 &amp; 상극 피하는 법</span>
+            <span class="d">별자리 원소 조화와 에겐·테토 보완이 만나 90점대 찰떡 궁합이 되는 기준</span>
+          </a>
+        </div>
+        <h2>K-MBTI가 기존 테스트와 다른 3가지 이유</h2>
+        <ul>
+          <li><strong>단일 라벨의 한계 보완</strong>: INFP라고 다 같은 INFP가 아닙니다. B형 사자자리 테토형 INFP와 A형 물고기자리 에겐형 INFP는 연애 스타일도, 일하는 방식도 정반대에 가깝습니다.</li>
+          <li><strong>겉과 속의 이중 구조</strong>: 남들이 보는 첫인상(별자리·혈액형)과 실제 가까운 사람만 아는 속내(MBTI·에겐테토)를 분리해 보여줍니다.</li>
+          <li><strong>관계 중심 해석</strong>: 혼자 보고 끝나는 결과가 아니라, 친구·썸·연인과 바로 점수를 맞춰볼 수 있도록 설계되었습니다.</li>
+        </ul>
+        
+    <div class="cta-box">
+      <strong style="font-size:16px;">내 4대 성격 성분표 + 반전 지수 확인해 볼까요?</strong>
+      <p style="font-size:13px;color:var(--muted);margin:6px 0 0;">생일·혈액형 2초 입력 + 한국식 상황극 10문항으로 바로 나옵니다.</p>
+      <a class="cta-btn" href="../index.html">내 K-MBTI 무료 테스트 시작 →</a>
+    </div>
+  </article>
+
+  <footer>
+    © K-MBTI · <a href="../index.html">테스트 홈으로</a> · <a href="index.html">성격 도감 목록</a>
+  </footer>
+</div>
+</body>
+</html>
