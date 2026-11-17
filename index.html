@@ -479,9 +479,12 @@
 </head>
 <body>
 <div class="app">
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
     <div class="badge-top" style="margin-bottom:0;">🇰🇷 K-MBTI · 4대 성격 통합 테스트</div>
-    <a href="guides/index.html" style="font-size:12px;font-weight:700;color:#c8c2ff;text-decoration:none;background:rgba(255,255,255,0.06);border:1px solid var(--border);padding:6px 10px;border-radius:999px;">📚 성격 도감</a>
+    <div style="display:flex;gap:6px;">
+      <a href="play/index.html" style="font-size:12px;font-weight:700;color:#ffd8a8;text-decoration:none;background:rgba(255,216,168,0.1);border:1px solid rgba(255,216,168,0.28);padding:6px 10px;border-radius:999px;">🎮 놀이터</a>
+      <a href="guides/index.html" style="font-size:12px;font-weight:700;color:#c8c2ff;text-decoration:none;background:rgba(255,255,255,0.06);border:1px solid var(--border);padding:6px 10px;border-radius:999px;">📚 성격 도감</a>
+    </div>
   </div>
 
   <!-- STEP 1 -->
@@ -649,6 +652,7 @@
   <footer class="footer-legal">
     <div>© K-MBTI · 본 테스트는 서버에 개인정보를 저장하지 않습니다.</div>
     <div>
+      <a href="play/index.html" style="color:inherit;font-size:inherit;">놀이터</a> ·
       <a href="guides/index.html" style="color:inherit;font-size:inherit;">성격 도감</a> ·
       <button type="button" onclick="openLegal('privacy')">개인정보처리방침</button> ·
       <button type="button" onclick="openLegal('terms')">이용약관</button> ·

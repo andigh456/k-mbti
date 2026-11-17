@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>오늘의 한 줄 운세 & 럭키 아이템 뽑기 · K-MBTI</title>
+<meta name="description" content="별자리로 뽑아보는 오늘의 행운 지수, 럭키 컬러, 추천 메뉴!" />
+<link rel="canonical" href="https://andigh456.github.io/k-mbti/play/fortune.html" />
+<meta property="og:title" content="오늘의 한 줄 운세 & 럭키 아이템 뽑기 · K-MBTI" />
+<meta property="og:description" content="별자리로 뽑아보는 오늘의 행운 지수, 럭키 컬러, 추천 메뉴!" />
+<meta property="og:image" content="https://andigh456.github.io/k-mbti/og-image.png" />
+<style>
+  :root {
+    --bg: #0f1016;
+    --card: #181a24;
+    --card-2: #212433;
+    --border: rgba(255,255,255,0.09);
+    --text: #f5f6fa;
+    --muted: #9aa0b4;
+    --accent: #7c6cff;
+    --accent-2: #ff6b9d;
+    --egen: #ff7eb3;
+    --teto: #4cc9f0;
+    --good: #38d9a9;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1d1f30 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.65;
+    padding: 18px 14px 48px;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; }
+  .top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    color: #c8c2ff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 13.5px;
+  }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12.5px;
+  }
+  .nav-links a { color: var(--muted); text-decoration: none; }
+  .nav-links a.active, .nav-links a:hover { color: #fff; font-weight: 700; }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px 18px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #c8c2ff;
+    background: rgba(124,108,255,0.16);
+    border: 1px solid rgba(124,108,255,0.35);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 23px; line-height: 1.3; margin: 0 0 8px; letter-spacing: -0.02em; }
+  .sub { font-size: 13.5px; color: var(--muted); margin: 0 0 18px; }
+  .hidden { display: none !important; }
+  .menu-card {
+    display: block;
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .menu-card:hover { border-color: rgba(124,108,255,0.6); }
+  .menu-card .t { display: block; font-size: 15.5px; font-weight: 800; margin-bottom: 4px; }
+  .menu-card .d { display: block; font-size: 13px; color: var(--muted); }
+  .primary-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .secondary-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    background: var(--card-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .opt-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.45;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .opt-btn:hover { border-color: rgba(124,108,255,0.55); }
+  .vs-btn {
+    width: 100%;
+    padding: 16px 14px;
+    border-radius: 16px;
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+  }
+  .vs-btn.picked {
+    border-color: var(--accent);
+    background: rgba(124,108,255,0.22);
+  }
+  .vs-or {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--accent-2);
+    margin: 8px 0;
+  }
+  .bar-wrap {
+    margin-top: 12px;
+    background: #232638;
+    border-radius: 999px;
+    height: 12px;
+    overflow: hidden;
+    display: flex;
+  }
+  .bar-a { background: var(--egen); height: 100%; }
+  .bar-b { background: var(--teto); height: 100%; }
+  .progress {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .result-box {
+    background: rgba(124,108,255,0.12);
+    border: 1px solid rgba(124,108,255,0.32);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .toast { text-align: center; font-size: 12.5px; color: var(--good); min-height: 18px; margin-top: 8px; }
+  select {
+    width: 100%;
+    background: var(--card-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14.5px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  footer {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top-nav">
+    <a class="brand" href="../index.html">🇰🇷 K-MBTI 홈</a>
+    <div class="nav-links">
+      <a href="index.html" class="">놀이터 홈</a>
+<a href="vs.html" class="">극한 VS</a>
+<a href="love-test.html" class="">연애 테스트</a>
+<a href="work-test.html" class="">직장 생존</a>
+<a href="fortune.html" class="active">오늘 운세</a>
+    </div>
+  </nav>
+  
+<div class="panel">
+  <span class="pill">🔮 오늘의 한 줄 운세</span>
+  <h1>오늘 내 럭키 포인트 &amp; 주의보</h1>
+  <p class="sub">별자리를 고르면 오늘 하루 행운 키워드와 추천 메뉴를 뽑아드려요.</p>
+  <select id="f-zodiac">
+    <option value="0">양자리 (3/21~4/19)</option>
+    <option value="1">황소자리 (4/20~5/20)</option>
+    <option value="2">쌍둥이자리 (5/21~6/21)</option>
+    <option value="3">게자리 (6/22~7/22)</option>
+    <option value="4">사자자리 (7/23~8/22)</option>
+    <option value="5">처녀자리 (8/23~9/22)</option>
+    <option value="6">천칭자리 (9/23~10/22)</option>
+    <option value="7">전갈자리 (10/23~11/22)</option>
+    <option value="8">사수자리 (11/23~12/21)</option>
+    <option value="9">염소자리 (12/22~1/19)</option>
+    <option value="10">물병자리 (1/20~2/18)</option>
+    <option value="11">물고기자리 (2/19~3/20)</option>
+  </select>
+  <button class="primary-btn" onclick="drawFortune()">✨ 오늘의 운세 뽑기</button>
+
+  <div id="f-res" class="hidden" style="margin-top:16px;">
+    <div class="result-box">
+      <div id="f-date" style="font-size:12px;color:#c8c2ff;font-weight:700;margin-bottom:6px;"></div>
+      <h2 id="f-line" style="font-size:18px;margin:0 0 10px;line-height:1.45;"></h2>
+      <p id="f-meta" style="font-size:13.5px;color:#dfe3f2;margin:0;white-space:pre-line;"></p>
+    </div>
+    <button class="secondary-btn" onclick="copyFortune()">오늘 운세 복사하기</button>
+    <div class="toast" id="f-toast"></div>
+  </div>
+</div>
+<script>
+const LINES = [
+  "미뤄뒀던 연락 1통이 뜻밖의 좋은 소식으로 돌아오는 날!",
+  "오늘은 남 눈치보다 내 컨디션 챙기는 게 수익·연애 다 이기는 길입니다.",
+  "사소한 말실수만 조심하면 오후부터 텐션이 확 살아납니다.",
+  "작은 소비 하나로 기분이 크게 풀리는 날! 단, 충동 큰지름은 내일로.",
+  "의외의 사람이 내 편을 들어줍니다. 혼자 끙끙대지 말고 말 꺼내보세요.",
+  "오늘의 승부수는 속도보다 디테일! 한 번만 더 확인하면 실수 0%."
+];
+const MENUS = ["매콤한 제육볶음", "따뜻한 우동 한 그릇", "바삭한 돈가스", "아이스 아메리카노 + 샌드위치", "얼큰한 김치찌개", "달달한 디저트 + 라떼"];
+const COLORS = ["코발트 블루", "민트 그린", "크림 베이지", "라벤더 퍼플", "차콜 블랙", "버터 옐로우"];
+let fCopy = "";
+function drawFortune() {
+  const zIdx = parseInt(document.getElementById("f-zodiac").value, 10);
+  const now = new Date();
+  const seed = now.getFullYear() * 10000 + (now.getMonth()+1)*100 + now.getDate() + zIdx * 7;
+  const line = LINES[seed % LINES.length];
+  const menu = MENUS[(seed + 3) % MENUS.length];
+  const color = COLORS[(seed + 5) % COLORS.length];
+  const score = 72 + (seed % 27);
+  const zName = document.getElementById("f-zodiac").selectedOptions[0].textContent.split(" ")[0];
+  document.getElementById("f-date").textContent = `${now.getMonth()+1}월 ${now.getDate()}일 · ${zName} 행운 지수 ${score}점`;
+  document.getElementById("f-line").textContent = line;
+  document.getElementById("f-meta").textContent = `🍀 행운 컬러: ${color}
+🍽️ 오늘 추천 메뉴: ${menu}
+💬 한 줄 팁: 오후 3시 전후로 작은 좋은 일이 들어올 수 있어요.`;
+  document.getElementById("f-res").classList.remove("hidden");
+  fCopy = `[오늘의 K-MBTI 운세 · ${zName}]\n점수: ${score}점\n"${line}"\n행운 컬러: ${color} / 추천 메뉴: ${menu}`;
+}
+async function copyFortune() {
+  try { await navigator.clipboard.writeText(fCopy); } catch {}
+  document.getElementById("f-toast").textContent = "운세 복사 완료!";
+}
+</script>
+
+  <footer>
+    © K-MBTI · <a href="../index.html">메인 테스트</a> · <a href="../guides/index.html">성격 도감</a>
+  </footer>
+</div>
+</body>
+</html>
